@@ -8,6 +8,7 @@ import PasswordInput from '../../components/auth/PasswordInput.jsx'
 import GoogleIcon from '../../components/auth/GoogleIcon.jsx'
 import Button from '../../components/ui/Button.jsx'
 import { signIn, signInWithGoogle } from '../../services/authService.js'
+import { TEST_ID, TEST_LOGIN_ENABLED, TEST_PASSWORD } from '../../services/testLogin.js'
 import { validateIdentifier } from '../../utils/authValidation.js'
 
 function SignIn() {
@@ -44,6 +45,14 @@ function SignIn() {
     setStatusKey(result.reason === 'invalid' ? 'auth.signIn.invalid' : 'auth.signIn.notConnected')
   }
 
+  // Demo builds only: fills the temporary demo account so a presenter does not have to type it.
+  const fillDemo = () => {
+    setIdentifier(TEST_ID)
+    setPassword(TEST_PASSWORD)
+    setErrors({})
+    setStatusKey(null)
+  }
+
   const handleGoogle = async () => {
     const result = await signInWithGoogle()
     if (!result.ok) setStatusKey('auth.signIn.googleUnavailable')
@@ -53,6 +62,27 @@ function SignIn() {
     <AuthLayout active="sign-in">
       <h1 className="auth-title">{t('auth.signIn.title')}</h1>
       <p className="auth-sub">{t('auth.signIn.sub')}</p>
+
+      {TEST_LOGIN_ENABLED && (
+        <div className="auth-demo">
+          <p>
+            <strong>{t('auth.signIn.demoTitle')}</strong> {t('auth.signIn.demoBody')}
+          </p>
+          <dl>
+            <div>
+              <dt>{t('auth.common.identifierLabel')}</dt>
+              <dd>{TEST_ID}</dd>
+            </div>
+            <div>
+              <dt>{t('auth.common.passwordLabel')}</dt>
+              <dd>{TEST_PASSWORD}</dd>
+            </div>
+          </dl>
+          <button type="button" className="auth-demo__fill" onClick={fillDemo}>
+            {t('auth.signIn.demoFill')}
+          </button>
+        </div>
+      )}
 
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
         <AuthField

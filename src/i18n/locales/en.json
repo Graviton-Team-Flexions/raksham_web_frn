@@ -291,6 +291,9 @@
     "signIn": {
       "title": "Welcome back",
       "sub": "Sign in to continue your guidance.",
+      "demoTitle": "Demo account.",
+      "demoBody": "This is a demo version. Use these details to look around.",
+      "demoFill": "Fill in demo login",
       "passwordPlaceholder": "Enter your password",
       "forgot": "Forgot password?",
       "forgotUnavailable": "Password recovery is not available yet.",

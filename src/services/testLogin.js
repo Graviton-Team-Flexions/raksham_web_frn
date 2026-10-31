@@ -6,8 +6,8 @@
 // authentication is connected.
 export const TEST_LOGIN_ENABLED = import.meta.env.DEV || import.meta.env.VITE_ENABLE_TEST_LOGIN === 'true'
 
-const TEST_ID = 'test@gmail.com'
-const TEST_PASSWORD = 'test123'
+export const TEST_ID = 'test@gmail.com'
+export const TEST_PASSWORD = 'test123'
 
 export function matchesTestLogin(identifier, password) {
   return TEST_LOGIN_ENABLED && identifier.trim().toLowerCase() === TEST_ID && password === TEST_PASSWORD
