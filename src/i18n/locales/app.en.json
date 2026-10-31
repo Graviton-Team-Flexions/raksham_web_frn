@@ -4,7 +4,7 @@
     "home": "Home",
     "askSachi": "Ask Sachi",
     "problemAreas": "Problem areas",
-    "resources": "Official resources",
+    "resources": "Resources",
     "advocates": "Advocates",
     "checklist": "My checklist",
     "drafts": "My drafts",
@@ -160,6 +160,141 @@
     "title": "{{section}} is coming soon",
     "body": "This part of the app hasn’t been built yet. Nothing here is saved or sent.",
     "back": "Back to home"
+  },
+  "resources": {
+    "title": "Resources",
+    "sub": "Trusted links, guides and articles to help you take the right action.",
+    "tabsLabel": "Resource categories",
+    "tabs": {
+      "all": "All resources",
+      "articles": "Articles",
+      "helplines": "Helplines",
+      "portals": "Government portals",
+      "guides": "Legal guides",
+      "safety": "Safety & awareness"
+    },
+    "featuredCta": "View guide",
+    "quick": {
+      "title": "Quick links",
+      "complaint": "File a complaint online",
+      "track": "Track your complaint",
+      "police": "Find your nearest police station",
+      "policeAsk": "Help me find my nearest police station.",
+      "forms": "Download useful forms"
+    },
+    "latest": {
+      "title": "Latest articles",
+      "all": "View all articles",
+      "minutes": "{{count}} min read"
+    },
+    "library": {
+      "title": "Resource library",
+      "filtersLabel": "Filter the resource library",
+      "filters": {
+        "all": "All",
+        "guides": "Guides",
+        "checklists": "Checklists",
+        "templates": "Templates"
+      },
+      "empty": "Nothing in this filter yet."
+    },
+    "popular": {
+      "title": "Popular resources"
+    },
+    "actions": {
+      "downloadPdf": "Download PDF",
+      "openTemplate": "Open template",
+      "read": "Read",
+      "call": "Call",
+      "openSite": "Open site",
+      "newTab": "Opens an official website in a new tab"
+    },
+    "list": {
+      "count_one": "{{count}} resource",
+      "count_other": "{{count}} resources",
+      "empty": "No resources here yet."
+    },
+    "footer": "Raksham provides access to official and publicly available resources. It does not offer legal advice.",
+    "article": {
+      "back": "Back to Resources",
+      "notice": "General information, not legal advice. This sample guide has not been reviewed by a legal expert.",
+      "englishOnly": "This guide is available in English only for now.",
+      "missingTitle": "We couldn’t find that guide.",
+      "missingBody": "It may have moved. Go back to see all resources."
+    },
+    "template": {
+      "copy": "Copy text",
+      "copied": "Copied",
+      "copyFailed": "Couldn’t copy. Select the text and copy it by hand.",
+      "download": "Download PDF",
+      "notice": "General information, not legal advice. Adapt it to your situation."
+    },
+    "items": {
+      "cybercrime-safety-guide": {
+        "title": "Cybercrime Safety Guide",
+        "description": "A simple guide to recognise scams, take quick action and protect yourself online."
+      },
+      "digital-arrest-scams": {
+        "title": "Digital Arrest Scams: What They Are and How to Stay Safe",
+        "description": "A guide to understand the scam, red flags and immediate steps to take."
+      },
+      "rights-police-enquiry": {
+        "title": "Your Rights During Police Enquiry",
+        "description": "Know what the law allows, what it doesn’t, and how to protect yourself."
+      },
+      "report-cybercrime": {
+        "title": "How to Report a Cybercrime in India",
+        "description": "A step-by-step guide with official portals, helplines and documents."
+      },
+      "cybercrime-complaint-checklist": {
+        "title": "Cybercrime Complaint Checklist",
+        "description": "A ready checklist of details to keep before filing a complaint."
+      },
+      "basic-legal-rights": {
+        "title": "Know Your Basic Legal Rights",
+        "description": "A concise guide to key rights every citizen should know."
+      },
+      "sample-complaint-format": {
+        "title": "Sample Complaint Format",
+        "description": "A simple format you can use to file a cybercrime or fraud complaint."
+      },
+      "it-act": {
+        "title": "IT Act, 2000 – Key Provisions",
+        "description": "Cyber laws and relevant sections."
+      },
+      "bns": {
+        "title": "BNS – Important Sections",
+        "description": "Common offences and penalties."
+      },
+      "womens-safety": {
+        "title": "Women’s Safety Resources",
+        "description": "Helplines, laws and support services."
+      },
+      "india-gov": {
+        "title": "India.gov.in",
+        "description": "National portal of the Government of India."
+      },
+      "erss-112": {
+        "title": "Emergency Response Support System (112)",
+        "description": "Official site for the 112 emergency number."
+      },
+      "cybercrime-portal": {
+        "title": "National Cyber Crime Reporting Portal",
+        "description": "Official portal to report cybercrime."
+      },
+      "wcd": {
+        "title": "Ministry of Women and Child Development",
+        "description": "Official site with women and child welfare information."
+      },
+      "nalsa": {
+        "title": "National Legal Services Authority",
+        "description": "Official site for free legal services."
+      },
+      "india-code": {
+        "title": "India Code",
+        "description": "Official repository of central Acts and rules."
+      }
+    }
   },
   "modal": {
     "close": "Close"

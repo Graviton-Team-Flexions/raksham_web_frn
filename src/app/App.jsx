@@ -14,6 +14,9 @@ import DraftsPage from '../pages/app/DraftsPage.jsx'
 import DraftDetailPage from '../pages/app/DraftDetailPage.jsx'
 import ChecklistPage from '../pages/app/ChecklistPage.jsx'
 import ChecklistDetailPage from '../pages/app/ChecklistDetailPage.jsx'
+import ResourcesPage from '../pages/app/ResourcesPage.jsx'
+import ResourceArticlePage from '../pages/app/ResourceArticlePage.jsx'
+import ResourceTemplatePage from '../pages/app/ResourceTemplatePage.jsx'
 import AppPlaceholderPage from '../pages/app/AppPlaceholderPage.jsx'
 
 // Start every route change at the top, or at the in-page anchor named in the URL.
@@ -30,7 +33,7 @@ function ScrollToTop() {
 }
 
 // Sections of the signed-in app that are not built yet render an honest placeholder.
-const placeholderPaths = ['resources', 'privacy', 'help']
+const placeholderPaths = ['privacy', 'help']
 
 function App() {
   return (
@@ -57,6 +60,9 @@ function App() {
           <Route path="drafts/:draftId" element={<DraftDetailPage />} />
           <Route path="checklist" element={<ChecklistPage />} />
           <Route path="checklist/:checklistId" element={<ChecklistDetailPage />} />
+          <Route path="resources" element={<ResourcesPage />} />
+          <Route path="resources/articles/:articleId" element={<ResourceArticlePage />} />
+          <Route path="resources/templates/:templateId" element={<ResourceTemplatePage />} />
           {placeholderPaths.map((path) => (
             <Route key={path} path={path} element={<AppPlaceholderPage />} />
           ))}
