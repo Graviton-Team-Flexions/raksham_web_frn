@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FileText } from 'lucide-react'
+import LegalSearchForm from '../../components/app/LegalSearchForm.jsx'
 import AppPageHeader from '../../components/app/AppPageHeader.jsx'
 import LibraryFooter from '../../components/app/LibraryFooter.jsx'
 import ResourceTabs from '../../components/app/ResourceTabs.jsx'
@@ -14,6 +16,7 @@ import { resourceEntries } from '../../utils/resourceActions.js'
 
 function ResourcesPage() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [category, setCategory] = useState('all')
   const [libraryFilter, setLibraryFilter] = useState('all')
   const libraryRef = useRef(null)
@@ -30,6 +33,7 @@ function ResourcesPage() {
   return (
     <main className="dash lib-page res-page">
       <AppPageHeader title={t('app.resources.title')} subtitle={t('app.resources.sub')} />
+      <LegalSearchForm id="legal-search-hub" onSearch={(text) => navigate(`/app/resources/search?q=${encodeURIComponent(text)}`)} />
       <ResourceTabs active={category} onChange={setCategory} />
 
       {category === 'all' ? (

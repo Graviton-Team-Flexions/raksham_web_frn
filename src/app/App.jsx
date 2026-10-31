@@ -16,6 +16,8 @@ import ChecklistPage from '../pages/app/ChecklistPage.jsx'
 import ChecklistDetailPage from '../pages/app/ChecklistDetailPage.jsx'
 import ResourcesPage from '../pages/app/ResourcesPage.jsx'
 import ResourceArticlePage from '../pages/app/ResourceArticlePage.jsx'
+import LegalSearchPage from '../pages/app/LegalSearchPage.jsx'
+import LegalDocumentPage from '../pages/app/LegalDocumentPage.jsx'
 import ResourceTemplatePage from '../pages/app/ResourceTemplatePage.jsx'
 import AppPlaceholderPage from '../pages/app/AppPlaceholderPage.jsx'
 
@@ -61,6 +63,8 @@ function App() {
           <Route path="checklist" element={<ChecklistPage />} />
           <Route path="checklist/:checklistId" element={<ChecklistDetailPage />} />
           <Route path="resources" element={<ResourcesPage />} />
+          <Route path="resources/search" element={<LegalSearchPage />} />
+          <Route path="resources/legal/:docId" element={<LegalDocumentPage />} />
           <Route path="resources/articles/:articleId" element={<ResourceArticlePage />} />
           <Route path="resources/templates/:templateId" element={<ResourceTemplatePage />} />
           {placeholderPaths.map((path) => (

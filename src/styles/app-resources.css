@@ -375,3 +375,58 @@
   .res-article-page { padding: 20px 18px 24px; }
   .res-article-page__intro { font-size: 1.04rem; }
 }
+
+/* Legal search (Indian Kanoon) */
+.res-search { display: flex; gap: 10px; margin-bottom: 16px; }
+.res-search__field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: #ffffff;
+}
+.res-search__field:focus-within { outline: 3px solid var(--app-yellow); outline-offset: 1px; }
+.res-search__field svg { flex: none; width: 20px; height: 20px; color: var(--app-muted); }
+.res-search__field input { flex: 1; min-width: 0; padding: 12px 0; border: 0; background: transparent; font: inherit; color: var(--app-text); outline: none; }
+.res-search__button {
+  flex: none;
+  padding: 0 22px;
+  border: 1px solid var(--app-black);
+  border-radius: 12px;
+  background: var(--app-black);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.res-search__button:disabled { opacity: 0.5; cursor: default; }
+.res-search__button:focus-visible { outline: 3px solid var(--app-yellow); outline-offset: 2px; }
+
+.ik-attribution { display: inline-block; max-width: 100%; margin: 6px 0; color: var(--app-muted); font-size: 0.85rem; }
+.legal-attribution { margin: 8px 0; }
+
+.legal-status { display: flex; align-items: center; gap: 10px; padding: 14px 0; color: var(--app-muted); }
+.legal-status--error { color: #b3261e; }
+.legal-status svg { width: 18px; height: 18px; }
+
+.legal-results { display: grid; gap: 12px; margin-top: 12px; }
+.legal-results li { padding: 14px 16px; border: 1px solid var(--app-border); border-radius: 12px; background: #ffffff; }
+.legal-results__title { font-weight: 600; color: var(--app-text); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.legal-results__meta { margin-top: 4px; font-size: 0.85rem; color: var(--app-muted); }
+.legal-results__snippet { margin-top: 8px; font-size: 0.92rem; line-height: 1.5; overflow-wrap: anywhere; }
+.legal-results__ext { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 0.88rem; color: var(--app-text); text-decoration: underline; text-underline-offset: 3px; }
+.legal-results__ext svg { width: 16px; height: 16px; }
+
+.legal-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.legal-pager .adv-btn { width: auto; min-width: 110px; }
+
+.legal-text { max-height: 70vh; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media (max-width: 520px) {
+  .res-search { flex-direction: column; }
+  .res-search__button { padding: 12px 22px; }
+}

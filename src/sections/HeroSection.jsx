@@ -12,8 +12,7 @@ function HeroSection() {
       <div className="hero__inner wrap">
         <div className="hero__content">
           <p className="hero__badge">
-            <Shield aria-hidden="true" fill="currentColor"
-             strokeWidth={1.5} />
+            <Shield aria-hidden="true" fill="currentColor" strokeWidth={1.5} />
             {t('hero.badge')}
           </p>
           <h1 className="hero__title" id="hero-title">

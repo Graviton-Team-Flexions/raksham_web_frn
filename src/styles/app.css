@@ -1242,3 +1242,10 @@
   .chat-option { min-height: 46px; padding: 0 16px; }
   .chat-composer { width: calc(100% - 20px); margin-bottom: 10px; padding: 10px 10px 8px; }
 }
+
+/* Sources under a Sachi reply that used Indian Kanoon */
+.chat-sources { margin-top: 8px; font-size: 0.86rem; }
+.chat-sources ol { display: grid; gap: 4px; margin-top: 6px; }
+.chat-sources a { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.chat-sources__n { font-weight: 600; }
+.chat-sources__meta { color: var(--app-muted); }

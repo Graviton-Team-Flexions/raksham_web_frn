@@ -143,7 +143,15 @@ export function useSachiChat(initial) {
       conversation.current = [...conversation.current, { role: 'assistant', content: result.reply }]
       dispatch({
         type: 'reply',
-        reply: { text: result.reply, emergency: result.emergency, helplines: result.helplines, grounded: result.grounded, offer },
+        reply: {
+          text: result.reply,
+          emergency: result.emergency,
+          helplines: result.helplines,
+          grounded: result.grounded,
+          sources: result.sources ?? [],
+          attribution: result.attribution ?? null,
+          offer,
+        },
       })
     } else {
       dispatch({ type: 'error', reason: result.reason, offer })

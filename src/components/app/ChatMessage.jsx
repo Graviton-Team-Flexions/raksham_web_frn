@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PhoneCall } from 'lucide-react'
 import SachiAvatar from './SachiAvatar.jsx'
+import IKanoonAttribution from './IKanoonAttribution.jsx'
 import { mockUser } from '../../data/app.js'
 import { sachiQuestions } from '../../data/sachiQuestions.js'
 
@@ -15,6 +16,7 @@ const ERROR_KEYS = {
   AI_UNAVAILABLE: 'unavailable',
   AI_BAD_RESPONSE: 'unavailable',
   network: 'network',
+  NOT_FOUND: 'notFound',
 }
 
 // Reasons where trying again cannot help until something is configured.
@@ -126,7 +128,31 @@ function SachiMessage({ message, active, answers, onAnswer, onSkip, onRetry }) {
           </div>
         )}
 
-        {isReply && !message.emergency && !message.grounded && <p className="chat-note">{t('app.chat.notChecked')}</p>}
+        {isReply && !message.emergency && message.sources?.length > 0 && (
+          <div className="chat-sources">
+            <strong>{t('app.chat.sources')}</strong>
+            <ol>
+              {message.sources.map((source) => (
+                <li key={source.id}>
+                  <span className="chat-sources__n">[{source.n}]</span>{' '}
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" lang="en">
+                    {source.title}
+                    <span className="sr-only"> ({t('app.resources.actions.newTab')})</span>
+                  </a>
+                  {(source.source || source.date) && (
+                    <span className="chat-sources__meta"> · {[source.source, source.date].filter(Boolean).join(' · ')}</span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {isReply && !message.emergency && message.attribution && <IKanoonAttribution />}
+
+        {isReply && !message.emergency && (
+          <p className="chat-note">{message.grounded ? t('app.chat.grounded') : t('app.chat.notChecked')}</p>
+        )}
 
         {message.kind === 'aiError' && (
           <>
