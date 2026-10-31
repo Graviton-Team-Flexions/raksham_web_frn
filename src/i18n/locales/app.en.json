@@ -111,6 +111,18 @@
     "intakeEmpty": "I would like general guidance on my situation.",
     "thinking": "Sachi is writing a reply…",
     "notChecked": "General information, not legal advice. Not yet checked against legal sources.",
+    "micStart": "Speak your message",
+    "micStop": "Stop listening",
+    "listening": "Listening… speak now, then tap the square to stop.",
+    "listeningHint": "Listening…",
+    "voiceNote": "Your browser’s speech service processes your voice.",
+    "micErrors": {
+      "denied": "Microphone access is blocked. Allow the microphone for this site in your browser, then try again.",
+      "noSpeech": "I didn’t hear anything. Tap the mic and try again.",
+      "noMic": "No microphone was found on this device.",
+      "network": "Voice typing needs an internet connection. Try again, or type your message.",
+      "generic": "Voice typing didn’t work. You can type your message instead."
+    },
     "retry": "Try again",
     "helplines": "Helplines",
     "errors": {

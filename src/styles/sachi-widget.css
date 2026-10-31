@@ -147,8 +147,11 @@
 }
 
 .sachi-widget .chat-composer__box { gap: 10px; }
-.sachi-widget .chat-composer textarea { height: 46px; padding: 10px 12px; font-size: 0.92rem; }
+.sachi-widget .chat-composer textarea { height: 46px; min-height: 46px; padding: 10px 12px; font-size: 0.92rem; }
 .sachi-widget .chat-send { width: 46px; height: 46px; }
+.sachi-widget .chat-field__voice { bottom: 5px; right: 6px; }
+.sachi-widget .chat-field textarea { padding-right: 52px; }
+.sachi-widget .chat-field.is-listening textarea { padding-right: 112px; }
 .sachi-widget .chat-composer__privacy { font-size: 0.74rem; }
 
 @media (max-width: 768px) {

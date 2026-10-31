@@ -1064,6 +1064,7 @@
   min-width: 0;
   box-sizing: border-box;
   height: 54px;
+  min-height: 54px;
   max-height: 140px;
   padding: 14px 18px;
   border: 1px solid var(--app-border);
@@ -1097,6 +1098,87 @@
 
 .chat-send:hover { background: #eab800; }
 .chat-send svg { width: 24px; height: 24px; }
+
+/* Voice typing: the mic lives inside the message box; while listening it shows a live waveform and a stop button. */
+.chat-field { position: relative; flex: 1; min-width: 0; }
+.chat-field textarea { width: 100%; padding-right: 58px; }
+.chat-field.is-listening textarea { padding-right: 118px; border-color: #d92d20; }
+.chat-field.is-listening textarea:focus-visible { outline-color: #d92d20; }
+
+.chat-field__voice {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-mic {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--app-muted);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.chat-mic svg { width: 22px; height: 22px; }
+.chat-mic:hover { background: var(--app-soft); color: var(--app-text); }
+.chat-mic:focus-visible { outline: 3px solid var(--app-yellow); outline-offset: 1px; }
+
+.chat-mic.is-listening {
+  width: 32px;
+  height: 32px;
+  background: #d92d20;
+  color: #ffffff;
+  animation: chat-mic-pulse 1.4s ease-out infinite;
+}
+
+.chat-mic.is-listening:hover { background: #b42318; }
+.chat-mic.is-listening svg { width: 14px; height: 14px; }
+
+@keyframes chat-mic-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(217 45 32 / 0.45); }
+  70% { box-shadow: 0 0 0 9px rgb(217 45 32 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(217 45 32 / 0); }
+}
+
+/* Five bars that move while the microphone is open. */
+.chat-wave { display: flex; align-items: center; gap: 3px; height: 22px; }
+
+.chat-wave i {
+  display: block;
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: #d92d20;
+  transform-origin: center;
+  animation: chat-wave 1s ease-in-out infinite;
+}
+
+.chat-wave i:nth-child(1) { height: 8px; }
+.chat-wave i:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+.chat-wave i:nth-child(3) { height: 22px; animation-delay: 0.2s; }
+.chat-wave i:nth-child(4) { height: 12px; animation-delay: 0.3s; }
+.chat-wave i:nth-child(5) { height: 18px; animation-delay: 0.15s; }
+
+@keyframes chat-wave {
+  0%, 100% { transform: scaleY(0.45); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-mic.is-listening, .chat-wave i { animation: none; }
+}
+
+.chat-voice { margin-top: 10px; font-size: 0.88rem; color: var(--app-muted); }
+.chat-voice--error { color: #b3261e; }
 
 .chat-composer__privacy {
   display: flex;
@@ -1146,8 +1228,9 @@
   .chat-header__area { order: 3; flex: 1 1 100%; justify-content: space-between; min-height: 42px; }
   .chat-call { order: 4; height: 42px; padding: 0 14px; font-size: 0.9rem; }
   .chat-header .app-lang { order: 5; margin-left: auto; }
-  .chat-composer textarea { height: 58px; font-size: 0.9rem; line-height: 1.3; padding: 10px 14px; }
+  .chat-composer textarea { height: 58px; min-height: 58px; font-size: 0.9rem; line-height: 1.3; padding: 10px 14px; }
   .chat-send { width: 50px; height: 58px; }
+  .chat-field__voice { bottom: 10px; }
   .chat__progress { padding-top: 14px; }
   .chat__thread { padding: 18px 0 14px; gap: 18px; }
   .chat-row { gap: 10px; }
