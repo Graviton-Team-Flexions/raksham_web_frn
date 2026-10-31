@@ -989,16 +989,47 @@
 /* Replies from the AI keep their line breaks and numbered steps. */
 .chat-bubble--reply { white-space: pre-wrap; }
 
-.chat-bubble--thinking { color: var(--app-muted); animation: chat-pulse 1.4s ease-in-out infinite; }
+/* "Sachi is typing": three bouncing dots. */
+.chat-bubble--typing { display: inline-flex; align-items: center; gap: 6px; padding: 18px 22px; }
 
-@keyframes chat-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
+.chat-bubble--typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #a3a6ad;
+  animation: chat-dot 1.2s ease-in-out infinite;
+}
+
+.chat-bubble--typing span:nth-child(2) { animation-delay: 0.15s; }
+.chat-bubble--typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes chat-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-5px); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chat-bubble--thinking { animation: none; }
+  .chat-bubble--typing span { animation: none; }
 }
+
+/* Suggested follow-up questions, lined up under Sachi's bubble. */
+.chat-quick { display: flex; flex-wrap: wrap; gap: 8px; margin-left: 72px; }
+
+.chat-quick__chip {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1.5px solid var(--app-text);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--app-text);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.chat-quick__chip:hover { background: var(--app-soft); }
+.chat-quick__chip:focus-visible { outline: 3px solid var(--app-yellow); outline-offset: 2px; }
 
 .chat-note { margin-top: 8px; font-size: 0.82rem; color: var(--app-muted); }
 
@@ -1120,6 +1151,7 @@
   .chat__progress { padding-top: 14px; }
   .chat__thread { padding: 18px 0 14px; gap: 18px; }
   .chat-row { gap: 10px; }
+  .chat-quick { margin-left: 54px; }
   .chat-avatar { width: 44px; height: 44px; margin-top: 14px; }
   .chat-avatar--fallback { width: 38px; height: 38px; margin-top: 20px; }
   .chat-avatar--fallback svg { width: 17px; }

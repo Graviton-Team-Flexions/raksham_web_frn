@@ -5,29 +5,41 @@ import { backendLanguage, buildIntakeSummary } from '../utils/sachiIntake.js'
 
 const MAX_HISTORY = 18 // the backend accepts at most 20 messages per request
 
+// Pacing, so the chat feels like talking to a person instead of a form. Scripted messages show
+// a typing indicator first; AI replies are held back until a believable typing time has passed.
+// Emergency help is never delayed.
+const TYPING_MS = { greeting: 1000, question: 1200, areaChanged: 700 }
+const typingDelay = (message) => (TYPING_MS[message.kind] ?? 900) + Math.random() * 300
+const MIN_REPLY_MS = 1200
+const MAX_EXTRA_MS = 1600
+const replyDelay = (text) => MIN_REPLY_MS + Math.min(text.length * 4, MAX_EXTRA_MS)
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
 // Messages store structured data (not translated text) so the conversation re-translates
-// when the language changes and is never reset by it.
+// when the language changes and is never reset by it. Sachi's scripted messages wait in `queue`
+// and are revealed one at a time.
 function createInitialState({ description, area, guest = false }) {
-  const messages = [{ id: 1, role: 'sachi', kind: 'greeting', guest }]
-  if (description) messages.push({ id: 2, role: 'user', kind: 'free', text: description })
-  messages.push({ id: 3, role: 'sachi', kind: 'question', qid: sachiQuestions[0].id })
-  return { area, messages, answers: {}, index: 0, finished: false, nextId: 4 }
+  const messages = description ? [{ id: 1, role: 'user', kind: 'free', text: description }] : []
+  const queue = [
+    { role: 'sachi', kind: 'greeting', guest },
+    { role: 'sachi', kind: 'question', qid: sachiQuestions[0].id },
+  ]
+  return { area, messages, queue, answers: {}, index: 0, finished: false, nextId: messages.length + 1 }
 }
 
 // What the backend sees: only the person's own words and Sachi's earlier replies.
 const startConversation = ({ description }) => (description ? [{ role: 'user', content: description }] : [])
 
-// Move to the next question, or finish after the last one.
+// Add the person's message now and queue Sachi's next question, or finish after the last one.
 function advance(state, added) {
   const messages = [...state.messages, ...added.map((m, i) => ({ ...m, id: state.nextId + i }))]
-  let nextId = state.nextId + added.length
+  const nextId = state.nextId + added.length
   const index = state.index + 1
   if (index >= sachiQuestions.length) {
     return { ...state, messages, nextId, index, finished: true }
   }
-  messages.push({ id: nextId, role: 'sachi', kind: 'question', qid: sachiQuestions[index].id })
-  nextId += 1
-  return { ...state, messages, nextId, index }
+  const queue = [...state.queue, { role: 'sachi', kind: 'question', qid: sachiQuestions[index].id }]
+  return { ...state, messages, queue, nextId, index }
 }
 
 // Drops the "writing a reply" placeholder and any earlier error before a new one is shown.
@@ -47,6 +59,7 @@ function reducer(state, action) {
       const question = sachiQuestions[state.index]
       if (state.finished || question?.id !== action.qid) return state
       const added = [{ role: 'user', kind: 'answer', qid: action.qid, option: action.option }]
+      // Safety first: this message appears at once, with no typing pause.
       if (action.qid === 'danger' && action.option === 'yes') added.push({ role: 'sachi', kind: 'dangerYes' })
       return advance({ ...state, answers: { ...state.answers, [action.qid]: action.option } }, added)
     }
@@ -63,12 +76,12 @@ function reducer(state, action) {
       return advance({ ...state, answers: { ...state.answers, [qid]: action.text } }, [userMessage])
     }
     case 'area':
-      return {
-        ...state,
-        area: action.area,
-        messages: [...state.messages, { id: state.nextId, role: 'sachi', kind: 'areaChanged', area: action.area }],
-        nextId: state.nextId + 1,
-      }
+      return { ...state, area: action.area, queue: [...state.queue, { role: 'sachi', kind: 'areaChanged', area: action.area }] }
+    case 'reveal': {
+      const [next, ...rest] = state.queue
+      if (!next) return state
+      return { ...state, messages: [...state.messages, { id: state.nextId, ...next }], queue: rest, nextId: state.nextId + 1 }
+    }
     case 'thinking':
       return appendSachi(state, { kind: 'thinking' })
     case 'reply':
@@ -87,6 +100,15 @@ export function useSachiChat(initial) {
   const total = sachiQuestions.length
   const isLast = state.index === total - 1
   const thinking = state.messages.some((m) => m.kind === 'thinking')
+  const typing = state.queue.length > 0
+  const busy = thinking || typing
+
+  // Reveal queued scripted messages one by one, each after its typing pause.
+  useEffect(() => {
+    if (state.queue.length === 0) return undefined
+    const timer = setTimeout(() => dispatch({ type: 'reveal' }), typingDelay(state.queue[0]))
+    return () => clearTimeout(timer)
+  }, [state.queue])
 
   // Refs hold what the backend request needs without re-creating the callbacks below.
   const conversation = useRef(startConversation(initial))
@@ -102,6 +124,7 @@ export function useSachiChat(initial) {
   const ask = useCallback(async (offer = false) => {
     offerRef.current = offer
     const ticket = ++run.current
+    const startedAt = Date.now()
     dispatch({ type: 'thinking' })
     const result = await requestGuidance({
       messages: conversation.current.slice(-MAX_HISTORY),
@@ -109,7 +132,14 @@ export function useSachiChat(initial) {
       area: areaRef.current,
     })
     if (ticket !== run.current) return
+
     if (result.ok) {
+      // Hold a normal reply back for a believable typing time. Emergency help comes straight away.
+      if (!result.emergency) {
+        const remaining = replyDelay(result.reply) - (Date.now() - startedAt)
+        if (remaining > 0) await sleep(remaining)
+        if (ticket !== run.current) return
+      }
       conversation.current = [...conversation.current, { role: 'assistant', content: result.reply }]
       dispatch({
         type: 'reply',
@@ -147,7 +177,7 @@ export function useSachiChat(initial) {
 
   const sendText = useCallback(
     (text) => {
-      if (thinking) return
+      if (busy) return
       dispatch({ type: 'text', text })
       if (state.finished) {
         conversation.current = [...conversation.current, { role: 'user', content: text }]
@@ -156,7 +186,7 @@ export function useSachiChat(initial) {
         finish({ ...state.answers, [sachiQuestions[state.index].id]: text })
       }
     },
-    [ask, finish, isLast, state.answers, state.finished, state.index, thinking],
+    [ask, busy, finish, isLast, state.answers, state.finished, state.index],
   )
 
   const retry = useCallback(() => ask(offerRef.current), [ask])
@@ -167,12 +197,26 @@ export function useSachiChat(initial) {
     dispatch({ type: 'reset', initial: nextInitial })
   }, [])
 
+  const question = state.finished ? null : sachiQuestions[state.index]
+  const last = state.messages.at(-1)
+
+  // Which hint the message box shows, so it always says what is expected next.
+  let placeholderKey = 'app.chat.placeholder'
+  if (busy) placeholderKey = 'app.chat.placeholderWait'
+  else if (state.finished) placeholderKey = 'app.chat.placeholderFollowUp'
+  else if (question?.type === 'text') placeholderKey = 'app.chat.placeholderWhat'
+
   return {
     state,
     total,
     thinking,
+    typing,
+    busy,
+    placeholderKey,
+    // Suggested follow-ups, shown only under a finished normal reply.
+    showQuickReplies: state.finished && !busy && last?.kind === 'ai' && !last.emergency,
     current: Math.min(state.index + 1, total),
-    question: state.finished ? null : sachiQuestions[state.index],
+    question,
     answer,
     skip,
     sendText,

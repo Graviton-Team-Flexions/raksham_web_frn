@@ -8,8 +8,9 @@ const MAX_LENGTH = 1500
 
 // Enter sends, Shift+Enter adds a new line, empty messages are ignored.
 // `disabled` blocks sending (for example while Sachi is writing a reply) but keeps the text editable.
-function ChatComposer({ onSend, disabled = false }) {
+function ChatComposer({ onSend, disabled = false, placeholder }) {
   const { t } = useTranslation()
+  const hint = placeholder ?? t('app.chat.placeholder')
   const [value, setValue] = useState('')
   const ref = useRef(null)
 
@@ -40,14 +41,14 @@ function ChatComposer({ onSend, disabled = false }) {
   return (
     <div className="chat-composer">
       <div className="chat-composer__box">
-        <label className="sr-only" htmlFor="chat-input">{t('app.chat.placeholder')}</label>
+        <label className="sr-only" htmlFor="chat-input">{hint}</label>
         <textarea
           id="chat-input"
           ref={ref}
           rows={1}
           value={value}
           maxLength={MAX_LENGTH}
-          placeholder={t('app.chat.placeholder')}
+          placeholder={hint}
           onChange={(event) => {
             setValue(event.target.value)
             resize()

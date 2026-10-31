@@ -1,11 +1,10 @@
 // Question configuration for the Ask Sachi flow. Text and option labels live in the locale
-// files under `app.chat.questions.<id>`. This is mock configuration: when the backend exists,
-// the same shape should be returned by the API instead of being defined here.
+// files under `app.chat.questions.<id>`. Only two things are asked up front: a safety check and
+// what happened. Anything else (when, evidence, location) Sachi asks for herself, one short
+// question at a time, only when the answer would change her advice.
 //   type 'choice': the user picks one of `options` (or types a free answer)
 //   type 'text'  : the user types a free answer
 export const sachiQuestions = [
   { id: 'danger', type: 'choice', options: ['yes', 'no', 'unsure'] },
-  { id: 'when', type: 'choice', options: ['today', 'week', 'earlier'] },
   { id: 'what', type: 'text' },
-  { id: 'evidence', type: 'choice', options: ['yes', 'no', 'unsure'] },
 ]

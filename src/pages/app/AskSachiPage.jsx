@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ChatHeader from '../../components/app/ChatHeader.jsx'
-import ChatMessage from '../../components/app/ChatMessage.jsx'
+import ChatThread from '../../components/app/ChatThread.jsx'
 import ChatComposer from '../../components/app/ChatComposer.jsx'
 import { useSachiChat } from '../../hooks/useSachiChat.js'
 import { sachiQuestions } from '../../data/sachiQuestions.js'
@@ -10,14 +10,15 @@ import { sachiQuestions } from '../../data/sachiQuestions.js'
 function SachiChat({ description, area }) {
   const { t } = useTranslation()
   const chat = useSachiChat({ description, area })
-  const { state, question } = chat
+  const { state } = chat
   const endRef = useRef(null)
 
+  // Keep the newest message in view, including the typing dots and suggested follow-ups.
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-  }, [state.messages.length])
+  }, [state.messages.length, chat.typing, chat.showQuickReplies])
 
-  const progress = state.finished ? 100 : (chat.current / (chat.total + 1)) * 100
+  const progress = (chat.current / (chat.total + 1)) * 100
 
   return (
     <div className="chat">
@@ -27,37 +28,30 @@ function SachiChat({ description, area }) {
         onStartOver={() => chat.reset({ description: '', area: state.area })}
       />
 
-      <div className="chat__progress">
-        <p>{state.finished ? t('app.chat.progressDone') : t('app.chat.progress', { current: chat.current, total: chat.total })}</p>
-        <div
-          className="chat__bar"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={sachiQuestions.length}
-          aria-valuenow={state.finished ? sachiQuestions.length : state.index}
-        >
-          <span style={{ width: `${progress}%` }} />
+      {/* Only while the short intake is running; afterwards the screen space goes to the conversation. */}
+      {!state.finished && (
+        <div className="chat__progress">
+          <p>{t('app.chat.progress', { current: chat.current, total: chat.total })}</p>
+          <div
+            className="chat__bar"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={sachiQuestions.length}
+            aria-valuenow={state.index}
+          >
+            <span style={{ width: `${progress}%` }} />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="chat__scroll">
         <div className="chat__thread" aria-live="polite">
-          {state.messages.map((message) => (
-            <ChatMessage
-              key={message.id}
-              message={message}
-              active={message.kind === 'question' && question?.id === message.qid}
-              answers={state.answers}
-              onAnswer={chat.answer}
-              onSkip={chat.skip}
-              onRetry={chat.retry}
-            />
-          ))}
+          <ChatThread chat={chat} />
           <div ref={endRef} />
         </div>
       </div>
 
-      <ChatComposer onSend={chat.sendText} disabled={chat.thinking} />
+      <ChatComposer onSend={chat.sendText} disabled={chat.busy} placeholder={t(chat.placeholderKey)} />
     </div>
   )
 }

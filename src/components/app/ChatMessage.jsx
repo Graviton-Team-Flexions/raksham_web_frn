@@ -32,6 +32,38 @@ function UserMessage({ message }) {
   )
 }
 
+// Three bouncing dots in Sachi's bubble: "she is typing". Used before scripted messages and AI replies.
+export function TypingRow() {
+  const { t } = useTranslation()
+  return (
+    <div className="chat-row">
+      <SachiAvatar />
+      <div className="chat-col">
+        <span className="chat-sender">{t('app.chat.sachi')}</span>
+        <p className="chat-bubble chat-bubble--typing" role="status" aria-label={t('app.chat.thinking')}>
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </p>
+      </div>
+    </div>
+  )
+}
+
+// Suggested follow-up questions, so the person can keep going without typing.
+export function QuickReplies({ onPick }) {
+  const { t } = useTranslation()
+  return (
+    <div className="chat-quick" role="group" aria-label={t('app.chat.quickLabel')}>
+      {['documents', 'where', 'advocate'].map((id) => (
+        <button key={id} type="button" className="chat-quick__chip" onClick={() => onPick(t(`app.chat.quick.${id}`))}>
+          {t(`app.chat.quick.${id}`)}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 const NextSteps = () => {
   const { t } = useTranslation()
   return (
@@ -65,7 +97,6 @@ function SachiMessage({ message, active, answers, onAnswer, onSkip, onRetry }) {
   if (message.kind === 'question') text = t(`app.chat.questions.${message.qid}.text`)
   if (message.kind === 'dangerYes') text = t('app.chat.dangerYes')
   if (message.kind === 'areaChanged') text = t('app.chat.areaChanged', { area: t(`app.areas.${message.area}`) })
-  if (message.kind === 'thinking') text = t('app.chat.thinking')
   if (message.kind === 'ai') text = message.text
   if (message.kind === 'aiError') text = t(`app.chat.errors.${ERROR_KEYS[message.reason] ?? 'generic'}`)
 
@@ -76,11 +107,7 @@ function SachiMessage({ message, active, answers, onAnswer, onSkip, onRetry }) {
       <SachiAvatar />
       <div className="chat-col">
         <span className="chat-sender">{t('app.chat.sachi')}</span>
-        <p className={`chat-bubble${isReply ? ' chat-bubble--reply' : ''}${message.kind === 'thinking' ? ' chat-bubble--thinking' : ''}`}>
-          {text}
-        </p>
-
-        {message.kind === 'thinking' && <span className="sr-only" role="status">{text}</span>}
+        <p className={`chat-bubble${isReply ? ' chat-bubble--reply' : ''}`}>{text}</p>
 
         {(message.kind === 'dangerYes' || (isReply && message.emergency)) && <CallButton />}
 
@@ -143,7 +170,9 @@ function SachiMessage({ message, active, answers, onAnswer, onSkip, onRetry }) {
 }
 
 function ChatMessage({ message, ...rest }) {
-  return message.role === 'user' ? <UserMessage message={message} /> : <SachiMessage message={message} {...rest} />
+  if (message.role === 'user') return <UserMessage message={message} />
+  if (message.kind === 'thinking') return <TypingRow />
+  return <SachiMessage message={message} {...rest} />
 }
 
 export default ChatMessage

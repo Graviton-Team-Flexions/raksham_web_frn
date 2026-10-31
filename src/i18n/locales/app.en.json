@@ -85,7 +85,6 @@
     "change": "Change",
     "changeArea": "Choose a problem area",
     "progress": "Question {{current}} of about {{total}}",
-    "progressDone": "All questions answered",
     "sachi": "Sachi",
     "you": "You",
     "placeholder": "Type your answer or describe what happened",
@@ -95,8 +94,17 @@
     "skipped": "Skipped",
     "more": "More options",
     "startOver": "Start over",
-    "greetingGuest": "Hi, I’m Sachi. I’ll ask a few short questions to help you find your next step. You can skip any question.",
-    "greeting": "Hi {{name}}. I’ll ask a few short questions to help you find your next step. You can skip any question.",
+    "greetingGuest": "Hi, I’m Sachi. I’m here to help you work out your next step. Just two quick things first, and you can skip either.",
+    "greeting": "Hi {{name}}, I’m Sachi. I’m here to help you work out your next step. Just two quick things first, and you can skip either.",
+    "placeholderWhat": "Tell me what happened, in your own words",
+    "placeholderFollowUp": "Ask a follow-up question",
+    "placeholderWait": "Sachi is typing…",
+    "quickLabel": "Quick questions",
+    "quick": {
+      "documents": "What documents should I keep?",
+      "where": "Where do I report this?",
+      "advocate": "Do I need an advocate?"
+    },
     "areaChanged": "Okay, I’ve switched to: {{area}}.",
     "dangerYes": "If you are in danger right now, please call 112 straight away. You can keep answering here once you are safe.",
     "intakeIntro": "Here is what I have shared so far:",
@@ -121,16 +129,8 @@
         "text": "First, are you in immediate danger right now?",
         "options": { "yes": "Yes, I need help now", "no": "No, I’m safe", "unsure": "Not sure" }
       },
-      "when": {
-        "text": "When did this happen?",
-        "options": { "today": "Today", "week": "In the last week", "earlier": "Earlier than that" }
-      },
       "what": {
-        "text": "In a few words, what happened? Share only what’s needed."
-      },
-      "evidence": {
-        "text": "Do you have any messages, screenshots or documents about it?",
-        "options": { "yes": "Yes", "no": "No", "unsure": "Not sure" }
+        "text": "Thank you. In a few words, what happened? Share only what’s needed. You can write it the way you’d tell a friend."
       }
     }
   },
