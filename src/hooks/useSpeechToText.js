@@ -17,6 +17,25 @@ const ERROR_KEYS = {
   network: 'network',
 }
 
+// Joins the engine's results into one sentence. Some browsers (notably Chrome on Android) send the
+// whole sentence so far again as each new result ("hello", "hello world", "hello world how"); joining
+// those naively types every word several times. When a result starts with, or is contained at the
+// start of, the previous one, only the longer one is kept.
+export function buildTranscript(results) {
+  const parts = []
+  for (const result of Array.from(results)) {
+    const text = (result[0]?.transcript ?? '').trim()
+    if (!text) continue
+    const previous = parts.at(-1)
+    if (previous !== undefined && (text.startsWith(previous) || previous.startsWith(text))) {
+      parts[parts.length - 1] = text.length >= previous.length ? text : previous
+    } else {
+      parts.push(text)
+    }
+  }
+  return parts.join(' ')
+}
+
 // `onText` receives the full text so far (what was in the box before, plus everything spoken),
 // updated as the person speaks. The person still presses send themselves.
 export function useSpeechToText({ language, onText }) {
@@ -49,11 +68,8 @@ export function useSpeechToText({ language, onText }) {
       const base = baseText && !/\s$/.test(baseText) ? `${baseText} ` : baseText
 
       engine.onresult = (event) => {
-        // Rebuild from every result each time; this avoids repeated words on some phones.
-        const spoken = Array.from(event.results)
-          .map((result) => result[0].transcript)
-          .join('')
-        onTextRef.current(base + spoken.trimStart())
+        // Rebuild from every result each time, so the text always matches what the engine heard so far.
+        onTextRef.current(base + buildTranscript(event.results))
       }
       engine.onerror = (event) => {
         if (event.error !== 'aborted') setErrorKey(ERROR_KEYS[event.error] ?? 'generic')
