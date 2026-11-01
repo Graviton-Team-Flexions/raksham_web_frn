@@ -35,8 +35,7 @@ function HumanHelpSection() {
                   </li>
                 ))}
               </ul>
-              {/* Advocate discovery is not built yet; this is a placeholder anchor. */}
-              <Button href="#human-help" variant="outline" arrow>{t('human.learnMore')}</Button>
+              <Button href="#advocates" variant="outline" arrow>{t('human.learnMore')}</Button>
             </div>
             <HumanHelpIllustration />
           </div>

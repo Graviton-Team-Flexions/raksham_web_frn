@@ -103,6 +103,62 @@
     "learnMore": "Learn more",
     "disclaimer": "Advocates are independent professionals. Raksham is not a law firm and does not provide legal advice."
   },
+  "advocates": {
+    "eyebrow": "Advocates",
+    "title": "Verified advocates",
+    "sub": "Human help when your situation needs a qualified professional.",
+    "signInAdvocate": "Sign in as Advocate",
+    "seeAll": "See all advocates",
+    "preview": "Preview:",
+    "previewText": "Sample profiles and a simulated request. Real advocate listing and booking are not live yet.",
+    "filter": {
+      "aria": "Find an advocate within your budget",
+      "budget": "Budget per consultation",
+      "area": "Practice area",
+      "allAreas": "All areas",
+      "match_one": "{{count}} of {{total}} advocate matches",
+      "match_other": "{{count}} of {{total}} advocates match",
+      "reset": "Reset filters"
+    },
+    "listLabel": "Advocates within your budget",
+    "position": "{{current}} of {{total}}",
+    "pause": "Pause automatic rotation",
+    "play": "Start automatic rotation",
+    "range": "{{start}}–{{end}} of {{total}}",
+    "previous": "Previous advocates",
+    "next": "Next advocates",
+    "name": "Sample Advocate {{n}}",
+    "portraitAlt": "Sample portrait of {{name}}",
+    "verified": "VERIFIED",
+    "sample": "SAMPLE",
+    "lowest": "Lowest fee",
+    "perConsultation": "/ consultation",
+    "budgetUsed": "{{percent}}% of your {{budget}} budget",
+    "areasLabel": "Practice areas",
+    "view": "View profile",
+    "request": "Request",
+    "empty": "No advocates match this budget and area. Try a higher budget or another area.",
+    "areas": {
+      "family": "Family Law",
+      "civil": "Civil Law",
+      "criminal": "Criminal Law",
+      "consumer": "Consumer Law",
+      "property": "Property Law",
+      "labour": "Labour Law",
+      "cyber": "Cyber Law",
+      "constitutional": "Constitutional Law"
+    },
+    "languages": {
+      "en": "English",
+      "hi": "Hindi",
+      "mr": "Marathi",
+      "ta": "Tamil"
+    },
+    "modes": {
+      "video": "Video",
+      "phone": "Phone"
+    }
+  },
   "resources": {
     "eyebrow": "Official resources",
     "title": "Find verified help, not guesswork.",

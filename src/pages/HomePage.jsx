@@ -6,6 +6,7 @@ import WhyRakshamSection from '../sections/WhyRakshamSection.jsx'
 import LegalCategoriesSection from '../sections/LegalCategoriesSection.jsx'
 import HowItWorksSection from '../sections/HowItWorksSection.jsx'
 import HumanHelpSection from '../sections/HumanHelpSection.jsx'
+import AdvocateFinderSection from '../sections/AdvocateFinderSection.jsx'
 import OfficialResourcesSection from '../sections/OfficialResourcesSection.jsx'
 import PrivacySafetySection from '../sections/PrivacySafetySection.jsx'
 
@@ -19,6 +20,7 @@ function HomePage() {
         <LegalCategoriesSection />
         <HowItWorksSection />
         <HumanHelpSection />
+        <AdvocateFinderSection />
         <OfficialResourcesSection />
         <PrivacySafetySection />
       </main>
